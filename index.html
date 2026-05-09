@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eventra — Event Operations Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<div class="app">
+
+<!-- ══════════════════════════════════
+     LEFT NAVIGATION
+══════════════════════════════════ -->
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="nav-logo"><i class="ti ti-calendar-event"></i></div>
+    <div>
+      <div class="nav-brandname">Eventra</div>
+      <div class="nav-tagline">Event Operations Platform</div>
+    </div>
+  </div>
+
+  <div class="nav-event-selector" onclick="openModal('switchEvent')">
+    <div class="nav-event-label">Active Event</div>
+    <div class="nav-event-name">
+      HIBS 2024
+      <span class="nav-event-badge">Live</span>
+    </div>
+  </div>
+
+  <div class="nav-section">Overview</div>
+  <div class="nav-item active" onclick="goTo('dashboard')"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
+  <div class="nav-item" onclick="goTo('events')"><i class="ti ti-calendar-event"></i> All Events</div>
+  <div class="nav-item" onclick="goTo('calendar')"><i class="ti ti-calendar-month"></i> Calendar</div>
+
+  <div class="nav-section">Operations</div>
+  <div class="nav-item" onclick="goTo('budget')"><i class="ti ti-currency-rupee"></i> Budget Tracker</div>
+  <div class="nav-item" onclick="goTo('expenses')"><i class="ti ti-receipt-2"></i> Expenses <span class="nav-badge">3</span></div>
+  <div class="nav-item" onclick="goTo('receipts')"><i class="ti ti-scan"></i> Receipts</div>
+  <div class="nav-item" onclick="goTo('tasks')"><i class="ti ti-checkbox"></i> Tasks <span class="nav-badge nav-badge-purple">5</span></div>
+
+  <div class="nav-section">People</div>
+  <div class="nav-item" onclick="goTo('volunteers')"><i class="ti ti-users"></i> Volunteers</div>
+  <div class="nav-item" onclick="goTo('guests')"><i class="ti ti-user-star"></i> Guests</div>
+
+  <div class="nav-section">Insights</div>
+  <div class="nav-item" onclick="goTo('analytics')"><i class="ti ti-chart-dots-3"></i> Analytics</div>
+  <div class="nav-item" onclick="goTo('reports')"><i class="ti ti-file-analytics"></i> Reports</div>
+  <div class="nav-item" onclick="goTo('ai')"><i class="ti ti-sparkles"></i> AI Insights <span class="nav-badge nav-badge-purple">New</span></div>
+
+  <div class="nav-section">System</div>
+  <div class="nav-item" onclick="goTo('notifications')"><i class="ti ti-bell"></i> Notifications <span class="nav-badge">4</span></div>
+  <div class="nav-item" onclick="goTo('settings')"><i class="ti ti-settings"></i> Settings</div>
+
+  <div class="nav-bottom">
+    <div style="margin-bottom:8px">
+      <div style="font-size:10px;color:rgba(255,255,255,0.3);padding:0 10px 4px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;">Viewing as</div>
+      <div style="display:flex;gap:6px;padding:0 6px;flex-wrap:wrap">
+        <span class="role-pill active" id="role-btn-coordinator" onclick="switchRole('coordinator')">Coordinator</span>
+        <span class="role-pill" id="role-btn-finance" onclick="switchRole('finance')">Finance</span>
+        <span class="role-pill" id="role-btn-faculty" onclick="switchRole('faculty')">Faculty</span>
+        <span class="role-pill" id="role-btn-volunteer" onclick="switchRole('volunteer')">Volunteer</span>
+      </div>
+    </div>
+    <div class="nav-profile" onclick="goTo('settings')">
+      <div class="nav-avatar">AG</div>
+      <div class="nav-profile-info">
+        <div class="nav-profile-name">Arpita Gupta</div>
+        <div class="nav-profile-role" id="role-label">Event Coordinator</div>
+      </div>
+      <i class="ti ti-chevron-right" style="font-size:14px;color:rgba(255,255,255,.3)"></i>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════
+     MAIN AREA
+══════════════════════════════════ -->
+<div class="main">
+
+<!-- ══════ DASHBOARD ══════ -->
+<div class="screen active" id="screen-dashboard">
+  <div class="topbar">
+    <div class="topbar-title">Dashboard</div>
+    <div class="topbar-breadcrumb">IIT Mandi SOM · <span>Dec 2024</span></div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm" onclick="goTo('notifications')"><i class="ti ti-bell"></i> <span style="background:var(--r400);color:#fff;font-size:10px;border-radius:10px;padding:1px 5px">4</span></button>
+      <button class="btn btn-primary btn-sm" onclick="openModal('createEvent')"><i class="ti ti-plus"></i> New Event</button>
+    </div>
+  </div>
+  <div class="content-area">
+    <!-- Hero Event Card -->
+    <div class="event-hero">
+      <div class="hero-badge"><i class="ti ti-radio" style="font-size:12px"></i> Live Event</div>
+      <div class="flex justify-between items-center mb-3">
+        <div>
+          <div class="hero-title">HIBS 2024</div>
+          <div class="hero-meta"><i class="ti ti-map-pin" style="font-size:13px"></i> Main Auditorium, IIT Mandi &nbsp;·&nbsp; <i class="ti ti-calendar" style="font-size:13px"></i> Dec 9–11, 2024</div>
+        </div>
+        <span class="badge badge-green" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25)">Active</span>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-val">₹10,000</div><div class="hero-stat-label">Total Budget</div></div>
+        <div class="hero-stat"><div class="hero-stat-val">₹5,000</div><div class="hero-stat-label">Spent</div></div>
+        <div class="hero-stat"><div class="hero-stat-val" style="color:#6EE7B7">₹5,000</div><div class="hero-stat-label">Remaining</div></div>
+        <div class="hero-stat"><div class="hero-stat-val">12</div><div class="hero-stat-label">Volunteers</div></div>
+        <div class="hero-stat"><div class="hero-stat-val">8</div><div class="hero-stat-label">Tasks Open</div></div>
+      </div>
+      <div class="hero-bar-wrap">
+        <div class="hero-bar-label"><span>Budget utilized</span><span>50% — On Track</span></div>
+        <div class="hero-bar"><div class="hero-bar-fill" style="width:50%"></div></div>
+      </div>
+      <div class="hero-actions">
+        <button class="hero-btn" onclick="goTo('budget')"><i class="ti ti-currency-rupee"></i> Budget</button>
+        <button class="hero-btn" onclick="goTo('tasks')"><i class="ti ti-checkbox"></i> Tasks</button>
+        <button class="hero-btn" onclick="goTo('volunteers')"><i class="ti ti-users"></i> Team</button>
+        <button class="hero-btn" onclick="openModal('scanReceipt')"><i class="ti ti-scan"></i> Scan</button>
+      </div>
+    </div>
+
+    <!-- KPI Row -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(127,119,221,0.12)"><i class="ti ti-calendar-event" style="color:var(--p600)"></i></div>
+        <div class="kpi-label">Active Events</div>
+        <div class="kpi-value">2</div>
+        <div class="kpi-change">3 total this semester</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(29,158,117,0.1)"><i class="ti ti-currency-rupee" style="color:var(--t400)"></i></div>
+        <div class="kpi-label">Budget Remaining</div>
+        <div class="kpi-value" style="color:var(--t400)">₹5,000</div>
+        <div class="kpi-change up"><i class="ti ti-arrow-up" style="font-size:11px"></i> 50% remaining</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(234,179,8,0.1)"><i class="ti ti-checkbox" style="color:#CA8A04"></i></div>
+        <div class="kpi-label">Tasks Due Today</div>
+        <div class="kpi-value" style="color:#CA8A04">3</div>
+        <div class="kpi-change down">2 overdue</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(226,75,74,0.1)"><i class="ti ti-receipt-2" style="color:var(--r400)"></i></div>
+        <div class="kpi-label">Pending Approvals</div>
+        <div class="kpi-value" style="color:var(--r400)">3</div>
+        <div class="kpi-change">Receipts awaiting review</div>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <div>
+        <!-- Budget by Category -->
+        <div class="card mb-4">
+          <div class="card-header flex justify-between items-center" style="padding-bottom:14px">
+            <div><div class="card-title">Budget by Category</div><div class="card-sub">HIBS 2024</div></div>
+            <button class="btn btn-ghost btn-sm" onclick="goTo('budget')">View all <i class="ti ti-arrow-right"></i></button>
+          </div>
+          <div class="card-body" style="padding-top:0">
+            <div class="cat-list">
+              <div class="cat-row" onclick="goTo('budget')">
+                <div class="cat-icon" style="background:#FEE2E2">🎭</div>
+                <div class="cat-info"><div class="cat-name">Cultural</div><div class="cat-amounts">₹1,800 of ₹2,000</div></div>
+                <div class="cat-bar-col"><div class="progress h-2"><div class="progress-bar bar-red" style="width:90%"></div></div></div>
+                <div class="cat-pct" style="color:var(--r400)">90%</div>
+                <span class="badge badge-red">At limit</span>
+              </div>
+              <div class="cat-row" onclick="goTo('budget')">
+                <div class="cat-icon" style="background:#FEF9C3">🍽️</div>
+                <div class="cat-info"><div class="cat-name">Hospitality</div><div class="cat-amounts">₹1,500 of ₹2,000</div></div>
+                <div class="cat-bar-col"><div class="progress h-2"><div class="progress-bar bar-amber" style="width:75%"></div></div></div>
+                <div class="cat-pct" style="color:#CA8A04">75%</div>
+                <span class="badge badge-amber">Watch</span>
+              </div>
+              <div class="cat-row" onclick="goTo('budget')">
+                <div class="cat-icon" style="background:#DCFCE7">🎤</div>
+                <div class="cat-info"><div class="cat-name">Stage Mgmt</div><div class="cat-amounts">₹780 of ₹1,500</div></div>
+                <div class="cat-bar-col"><div class="progress h-2"><div class="progress-bar bar-green" style="width:52%"></div></div></div>
+                <div class="cat-pct" style="color:var(--t400)">52%</div>
+                <span class="badge badge-green">Healthy</span>
+              </div>
+              <div class="cat-row" onclick="goTo('budget')">
+                <div class="cat-icon" style="background:var(--p50)">📦</div>
+                <div class="cat-info"><div class="cat-name">Miscellaneous</div><div class="cat-amounts">₹500 of ₹2,000</div></div>
+                <div class="cat-bar-col"><div class="progress h-2"><div class="progress-bar bar-green" style="width:25%"></div></div></div>
+                <div class="cat-pct" style="color:var(--t400)">25%</div>
+                <span class="badge badge-green">Healthy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tasks Due Today -->
+        <div class="card mb-4">
+          <div class="card-header flex justify-between items-center" style="padding-bottom:14px">
+            <div><div class="card-title">Tasks Due Today</div><div class="card-sub">Dec 9, 2024</div></div>
+            <button class="btn btn-ghost btn-sm" onclick="goTo('tasks')">All tasks <i class="ti ti-arrow-right"></i></button>
+          </div>
+          <div class="card-body" style="padding-top:4px">
+            <div class="task-row">
+              <div class="task-check" onclick="toggleCheck(this)"><i class="ti ti-check"></i></div>
+              <div class="task-body">
+                <div class="task-title">Sound check with live band</div>
+                <div class="task-meta">
+                  <div class="task-meta-item"><div class="avatar avatar-sm av-teal">PR</div> Priya</div>
+                  <div class="task-meta-item"><i class="ti ti-clock"></i> 9:00 AM</div>
+                  <span class="task-priority tp-high">High</span>
+                  <span class="badge badge-red">Overdue</span>
+                </div>
+              </div>
+            </div>
+            <div class="task-row">
+              <div class="task-check" onclick="toggleCheck(this)"><i class="ti ti-check"></i></div>
+              <div class="task-body">
+                <div class="task-title">Finalize guest seating arrangement</div>
+                <div class="task-meta">
+                  <div class="task-meta-item"><div class="avatar avatar-sm av-purple">AG</div> Arpita</div>
+                  <div class="task-meta-item"><i class="ti ti-clock"></i> 12:00 PM</div>
+                  <span class="task-priority tp-high">High</span>
+                </div>
+              </div>
+            </div>
+            <div class="task-row">
+              <div class="task-check" onclick="toggleCheck(this)"><i class="ti ti-check"></i></div>
+              <div class="task-body">
+                <div class="task-title">Print name badges for 24 guests</div>
+                <div class="task-meta">
+                  <div class="task-meta-item"><div class="avatar avatar-sm av-amber">RS</div> Rahul</div>
+                  <div class="task-meta-item"><i class="ti ti-clock"></i> 3:00 PM</div>
+                  <span class="task-priority tp-med">Medium</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Insights -->
+        <div class="section-heading">AI Insights</div>
+        <div class="insight insight-warn"><i class="ti ti-alert-triangle"></i><div class="insight-text">Cultural category is at 90% budget utilization with 2 days remaining. Reallocating ₹500 from Misc surplus is recommended.</div></div>
+        <div class="insight"><i class="ti ti-bulb"></i><div class="insight-text">At current burn rate, the remaining ₹5,000 budget covers ~14 days — well within the HIBS 2024 timeline.</div></div>
+        <div class="insight insight-ok"><i class="ti ti-trending-up"></i><div class="insight-text">Volunteer task completion rate is at 72% — above the SOM average of 65% for events of this size.</div></div>
+      </div>
+
+      <!-- Right column -->
+      <div>
+        <!-- Recent Activity -->
+        <div class="card mb-4">
+          <div class="card-header flex justify-between items-center" style="padding-bottom:14px">
+            <div class="card-title">Recent Activity</div>
+            <span class="text-xs text-muted" style="color:var(--p600);cursor:pointer">View all</span>
+          </div>
+          <div style="padding:0 20px">
+            <div style="display:flex;gap:10px;padding:11px 0;border-bottom:1px solid var(--border)">
+              <div class="avatar avatar-sm av-purple" style="margin-top:1px">RS</div>
+              <div><div style="font-size:13px;color:var(--g800)">Rahul added <strong>₹200</strong> to Stage equipment</div><div class="text-xs text-muted mt-1">2 hours ago</div></div>
+            </div>
+            <div style="display:flex;gap:10px;padding:11px 0;border-bottom:1px solid var(--border)">
+              <div class="avatar avatar-sm av-teal" style="margin-top:1px">PR</div>
+              <div><div style="font-size:13px;color:var(--g800)">Priya submitted receipt — <strong>₹850</strong> mic rental</div><div class="text-xs text-muted mt-1">4 hours ago</div></div>
+            </div>
+            <div style="display:flex;gap:10px;padding:11px 0;border-bottom:1px solid var(--border)">
+              <div class="avatar avatar-sm av-amber" style="margin-top:1px">MK</div>
+              <div><div style="font-size:13px;color:var(--g800)">Mohan confirmed as Hospitality volunteer</div><div class="text-xs text-muted mt-1">Yesterday, 5 PM</div></div>
+            </div>
+            <div style="display:flex;gap:10px;padding:11px 0;border-bottom:1px solid var(--border)">
+              <div class="avatar avatar-sm" style="background:#DBEAFE;color:#1D4ED8;margin-top:1px">PS</div>
+              <div><div style="font-size:13px;color:var(--g800)">Dr. Puran Singh <strong>approved</strong> ₹10,000 budget</div><div class="text-xs text-muted mt-1">Dec 7, 11 AM</div></div>
+            </div>
+            <div style="display:flex;gap:10px;padding:11px 0">
+              <div class="avatar avatar-sm av-purple" style="margin-top:1px">AG</div>
+              <div><div style="font-size:13px;color:var(--g800)">Arpita created <strong>HIBS 2024</strong> event</div><div class="text-xs text-muted mt-1">Dec 4, 3 PM</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pending Approvals -->
+        <div class="card mb-4" id="approvalCard">
+          <div class="card-header" style="padding-bottom:12px"><div class="card-title">Pending Approvals <span class="badge badge-red" style="margin-left:6px">3</span></div></div>
+          <div style="padding:0 20px 16px;display:flex;flex-direction:column;gap:10px">
+            <div style="padding:12px;background:var(--r50);border-radius:var(--radius);border:1px solid #fca5a5">
+              <div class="flex justify-between items-center mb-2"><div style="font-size:13px;font-weight:500;color:var(--g900)">Wireless Mic Rental</div><div style="font-size:15px;font-weight:600;color:var(--g900)">₹850</div></div>
+              <div style="font-size:11px;color:var(--g400);margin-bottom:8px">Cultural · Priya Rao · Dec 6, 12:30 PM</div>
+              <div class="flex gap-2">
+                <button class="btn btn-success btn-sm w-full" style="justify-content:center"><i class="ti ti-check"></i> Approve</button>
+                <button class="btn btn-danger btn-sm w-full" style="justify-content:center"><i class="ti ti-x"></i> Reject</button>
+              </div>
+            </div>
+            <div style="padding:12px;background:var(--g50);border-radius:var(--radius);border:1px solid var(--border)">
+              <div class="flex justify-between items-center mb-2"><div style="font-size:13px;font-weight:500;color:var(--g900)">ITC Hotel — Catering</div><div style="font-size:15px;font-weight:600;color:var(--g900)">₹2,200</div></div>
+              <div style="font-size:11px;color:var(--g400);margin-bottom:8px">Hospitality · Rahul Sharma · Dec 7, 9 AM</div>
+              <div class="flex gap-2">
+                <button class="btn btn-success btn-sm w-full" style="justify-content:center"><i class="ti ti-check"></i> Approve</button>
+                <button class="btn btn-danger btn-sm w-full" style="justify-content:center"><i class="ti ti-x"></i> Reject</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mini Calendar -->
+        <div class="card">
+          <div class="card-header flex justify-between items-center" style="padding-bottom:14px">
+            <div class="card-title">December 2024</div>
+            <button class="btn btn-ghost btn-sm" onclick="goTo('calendar')">Full calendar <i class="ti ti-arrow-right"></i></button>
+          </div>
+          <div class="card-body" style="padding-top:4px">
+            <div class="cal-grid">
+              <div class="cal-day-name">Sun</div><div class="cal-day-name">Mon</div><div class="cal-day-name">Tue</div><div class="cal-day-name">Wed</div><div class="cal-day-name">Thu</div><div class="cal-day-name">Fri</div><div class="cal-day-name">Sat</div>
+              <div class="cal-day empty">1</div><div class="cal-day empty">2</div><div class="cal-day empty">3</div><div class="cal-day empty">4</div><div class="cal-day has-event">5</div><div class="cal-day has-event">6</div><div class="cal-day has-event">7</div>
+              <div class="cal-day empty">8</div><div class="cal-day today">9</div><div class="cal-day range">10</div><div class="cal-day range">11</div><div class="cal-day">12</div><div class="cal-day">13</div><div class="cal-day">14</div>
+              <div class="cal-day">15</div><div class="cal-day">16</div><div class="cal-day">17</div><div class="cal-day">18</div><div class="cal-day">19</div><div class="cal-day">20</div><div class="cal-day">21</div>
+            </div>
+            <div style="margin-top:12px;font-size:11px;color:var(--g400);display:flex;gap:12px">
+              <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;background:var(--p600);border-radius:50%;display:inline-block"></span>Today (Dec 9)</span>
+              <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;background:var(--p100);border-radius:50%;display:inline-block"></span>HIBS event range</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ EVENTS LIST ══════ -->
+<div class="screen" id="screen-events">
+  <div class="topbar">
+    <div class="topbar-title">All Events</div>
+    <div class="topbar-actions">
+      <div class="chips">
+        <span class="chip active">All</span>
+        <span class="chip">Active</span>
+        <span class="chip">Planning</span>
+        <span class="chip">Completed</span>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="openModal('createEvent')"><i class="ti ti-plus"></i> New Event</button>
+    </div>
+  </div>
+  <div class="content-area">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <!-- Event rows -->
+      <div class="card" style="cursor:pointer" onclick="goTo('dashboard')">
+        <div class="card-body">
+          <div class="flex justify-between items-center mb-3">
+            <div class="flex gap-3 items-center">
+              <div style="width:44px;height:44px;background:linear-gradient(135deg,var(--p600),var(--p800));border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:600">H</div>
+              <div><div class="font-semibold" style="font-size:15px;color:var(--g900)">HIBS 2024</div><div class="text-xs text-muted">Hospitality, Industry & Business Summit</div></div>
+            </div>
+            <span class="badge badge-green">Active</span>
+          </div>
+          <div class="flex gap-4 text-xs text-muted mb-3" style="flex-wrap:wrap">
+            <span><i class="ti ti-calendar"></i> Dec 9–11, 2024</span>
+            <span><i class="ti ti-map-pin"></i> Main Auditorium, IIT Mandi</span>
+            <span><i class="ti ti-users"></i> 12 volunteers</span>
+            <span><i class="ti ti-currency-rupee"></i> ₹10,000 budget</span>
+            <span><i class="ti ti-user"></i> Arpita Gupta</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="progress h-2" style="flex:1"><div class="progress-bar bar-amber" style="width:50%"></div></div>
+            <span class="text-xs text-muted">50% budget used</span>
+            <span class="badge badge-amber">₹5K remaining</span>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="cursor:pointer">
+        <div class="card-body">
+          <div class="flex justify-between items-center mb-3">
+            <div class="flex gap-3 items-center">
+              <div style="width:44px;height:44px;background:linear-gradient(135deg,var(--t400),var(--t600));border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:600">E</div>
+              <div><div class="font-semibold" style="font-size:15px;color:var(--g900)">Exodia 2024</div><div class="text-xs text-muted">Annual Cultural Festival</div></div>
+            </div>
+            <span class="badge badge-amber">Planning</span>
+          </div>
+          <div class="flex gap-4 text-xs text-muted mb-3" style="flex-wrap:wrap">
+            <span><i class="ti ti-calendar"></i> Jan 15–17, 2025</span>
+            <span><i class="ti ti-map-pin"></i> Cultural Complex, IIT Mandi</span>
+            <span><i class="ti ti-users"></i> 0 volunteers</span>
+            <span><i class="ti ti-currency-rupee"></i> ₹15,000 budget</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="progress h-2" style="flex:1"><div class="progress-bar bar-green" style="width:12%"></div></div>
+            <span class="text-xs text-muted">12% budget used</span>
+            <span class="badge badge-green">₹13.2K remaining</span>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="cursor:pointer">
+        <div class="card-body">
+          <div class="flex justify-between items-center mb-3">
+            <div class="flex gap-3 items-center">
+              <div style="width:44px;height:44px;background:linear-gradient(135deg,#6B7280,#374151);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:600">I</div>
+              <div><div class="font-semibold" style="font-size:15px;color:var(--g900)">Iqnitia 2024</div><div class="text-xs text-muted">Tech Innovation Summit</div></div>
+            </div>
+            <span class="badge badge-gray">Completed</span>
+          </div>
+          <div class="flex gap-4 text-xs text-muted mb-3" style="flex-wrap:wrap">
+            <span><i class="ti ti-calendar"></i> Nov 20, 2024</span>
+            <span><i class="ti ti-map-pin"></i> Lecture Hall Complex</span>
+            <span><i class="ti ti-users"></i> 18 volunteers</span>
+            <span><i class="ti ti-currency-rupee"></i> ₹8,000 budget</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="progress h-2" style="flex:1"><div class="progress-bar bar-red" style="width:97%"></div></div>
+            <span class="text-xs text-muted">97% utilized</span>
+            <span class="badge badge-gray">Closed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ BUDGET TRACKER ══════ -->
+<div class="screen" id="screen-budget">
+  <div class="topbar">
+    <div class="topbar-title">Budget Tracker — HIBS 2024</div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm" onclick="openModal('reallocate')"><i class="ti ti-arrows-exchange"></i> Reallocate</button>
+      <button class="btn btn-secondary btn-sm" onclick="goTo('reports')"><i class="ti ti-download"></i> Export</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal('addExpense')"><i class="ti ti-plus"></i> Add Expense</button>
+    </div>
+  </div>
+  <div class="content-area">
+    <!-- Health Summary -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;margin-bottom:20px">
+      <div class="kpi-card"><div class="kpi-label">Total Budget</div><div class="kpi-value">₹10,000</div><div class="kpi-change">HIBS 2024</div></div>
+      <div class="kpi-card"><div class="kpi-label">Total Spent</div><div class="kpi-value" style="color:var(--r400)">₹5,000</div><div class="kpi-change down">50% utilized</div></div>
+      <div class="kpi-card"><div class="kpi-label">Remaining</div><div class="kpi-value" style="color:var(--t400)">₹5,000</div><div class="kpi-change up">~14 days burn rate</div></div>
+      <div class="kpi-card"><div class="kpi-label">Health Status</div><div class="kpi-value" style="font-size:18px">🟢 On Track</div><div class="kpi-change">1 category at risk</div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 380px;gap:20px">
+      <div>
+        <!-- Category breakdown table -->
+        <div class="card mb-4">
+          <div class="card-header flex justify-between items-center" style="padding-bottom:14px">
+            <div><div class="card-title">Category Breakdown</div><div class="card-sub">Tap a category to see line items</div></div>
+            <button class="btn btn-ghost btn-sm" onclick="openModal('addCategory')"><i class="ti ti-plus"></i> Add category</button>
+          </div>
+          <table class="data-table" style="border-top:1px solid var(--border)">
+            <thead><tr><th>Category</th><th>Budget</th><th>Spent</th><th>Remaining</th><th>Utilization</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+              <tr onclick="openDetail('cultural')">
+                <td><div class="flex gap-2 items-center"><span style="font-size:18px">🎭</span><span class="font-medium">Cultural</span></div></td>
+                <td>₹2,000</td>
+                <td style="color:var(--r400);font-weight:500">₹1,800</td>
+                <td style="color:var(--r400);font-weight:500">₹200</td>
+                <td><div class="flex items-center gap-2"><div class="progress h-2" style="width:80px"><div class="progress-bar bar-red" style="width:90%"></div></div><span class="text-xs" style="color:var(--r400)">90%</span></div></td>
+                <td><span class="badge badge-red">At limit</span></td>
+                <td><i class="ti ti-chevron-right" style="color:var(--g300)"></i></td>
+              </tr>
+              <tr onclick="openDetail('hospitality')">
+                <td><div class="flex gap-2 items-center"><span style="font-size:18px">🍽️</span><span class="font-medium">Hospitality</span></div></td>
+                <td>₹2,000</td>
+                <td style="color:#CA8A04;font-weight:500">₹1,500</td>
+                <td style="color:#CA8A04;font-weight:500">₹500</td>
+                <td><div class="flex items-center gap-2"><div class="progress h-2" style="width:80px"><div class="progress-bar bar-amber" style="width:75%"></div></div><span class="text-xs" style="color:#CA8A04">75%</span></div></td>
+                <td><span class="badge badge-amber">Watch</span></td>
+                <td><i class="ti ti-chevron-right" style="color:var(--g300)"></i></td>
+              </tr>
+              <tr onclick="openDetail('stage')">
+                <td><div class="flex gap-2 items-center"><span style="font-size:18px">🎤</span><span class="font-medium">Stage Mgmt</span></div></td>
+                <td>₹1,500</td>
+                <td style="color:var(--g800);font-weight:500">₹780</td>
+                <td style="color:var(--t400);font-weight:500">₹720</td>
+                <td><div class="flex items-center gap-2"><div class="progress h-2" style="width:80px"><div class="progress-bar bar-green" style="width:52%"></div></div><span class="text-xs" style="color:var(--t400)">52%</span></div></td>
+                <td><span class="badge badge-green">Healthy</span></td>
+                <td><i class="ti ti-chevron-right" style="color:var(--g300)"></i></td>
+              </tr>
+              <tr onclick="openDetail('volunteers')">
+                <td><div class="flex gap-2 items-center"><span style="font-size:18px">👥</span><span class="font-medium">Volunteers</span></div></td>
+                <td>₹1,000</td>
+                <td style="color:var(--g800);font-weight:500">₹400</td>
+                <td style="color:var(--t400);font-weight:500">₹600</td>
+                <td><div class="flex items-center gap-2"><div class="progress h-2" style="width:80px"><div class="progress-bar bar-green" style="width:40%"></div></div><span class="text-xs" style="color:var(--t400)">40%</span></div></td>
+                <td><span class="badge badge-green">Healthy</span></td>
+                <td><i class="ti ti-chevron-right" style="color:var(--g300)"></i></td>
+              </tr>
+              <tr onclick="openDetail('misc')">
+                <td><div class="flex gap-2 items-center"><span style="font-size:18px">📦</span><span class="font-medium">Miscellaneous</span></div></td>
+                <td>₹2,000</td>
+                <td style="color:var(--g800);font-weight:500">₹500</td>
+                <td style="color:var(--t400);font-weight:500">₹1,500</td>
+                <td><div class="flex items-center gap-2"><div class="progress h-2" style="width:80px"><div class="progress-bar bar-green" style="width:25%"></div></div><span class="text-xs" style="color:var(--t400)">25%</span></div></td>
+                <td><span class="badge badge-green">Healthy</span></td>
+                <td><i class="ti ti-chevron-right" style="color:var(--g300)"></i></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr style="background:var(--g50)">
+                <td class="font-semibold">Total</td>
+                <td class="font-semibold">₹10,000</td>
+                <td class="font-semibold" style="color:var(--r400)">₹4,980</td>
+                <td class="font-semibold" style="color:var(--t400)">₹5,020</td>
+                <td colspan="3"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <!-- Alerts -->
+        <div class="insight insight-warn"><i class="ti ti-alert-triangle"></i><div class="insight-text"><strong>Cultural category</strong> is at 90% — only ₹200 remaining. Reallocate from Misc (₹1,500 available) to avoid overspend.</div></div>
+      </div>
+
+      <!-- Burn Chart -->
+      <div>
+        <div class="chart-card mb-4">
+          <div class="chart-title">Budget Burn — Planned vs. Actual</div>
+          <div class="chart-sub">Cumulative spend over event timeline</div>
+          <canvas id="burnChart" height="200"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Spend by Category</div>
+          <div class="chart-sub">Distribution of ₹4,980 spent</div>
+          <canvas id="donutChart" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ TASKS ══════ -->
+<div class="screen" id="screen-tasks">
+  <div class="topbar">
+    <div class="topbar-title">Tasks — HIBS 2024</div>
+    <div class="topbar-actions">
+      <div class="chips">
+        <span class="chip active">All Tasks</span>
+        <span class="chip">My Tasks</span>
+        <span class="chip">Overdue</span>
+        <span class="chip">Completed</span>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="openModal('addTask')"><i class="ti ti-plus"></i> Add Task</button>
+    </div>
+  </div>
+  <div class="content-area">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div>
+        <div class="section-heading" style="color:var(--r400)"><span>Overdue (2)</span></div>
+        <div class="card mb-4">
+          <div style="padding:4px 16px 8px">
+            <div class="task-row">
+              <div class="task-check" onclick="toggleCheck(this)"><i class="ti ti-check"></i></div>
+              <div class="task-body">
+                <div class="task-title">Book AV vendor final payment</div>
+                <div class="task-meta">
+                  <div class="task-meta-item"><div class="avatar avatar-sm av-purple">AG</div> Arpita</div>
+                  <div class="task-meta-item"><i class="ti ti-calendar"></i> Dec 5</div>
+                  <span class="task-priority tp-high">High</span>
+                  <span class="badge badge-red">2 days late</span>
+                </div>
+              </div>
+            </div>
+            <div class="task-row">
+              <div class="task-check" onclick="toggleCheck(this)"><i class="ti ti-check"></i></div>
+              <div class="task-body">
+                <div class="task-title">Confirm catering headcount with hotel</div>
+                <div class="task-meta">
+                  <div class="task-meta-item"><div class="avatar avatar-sm av-amber">RS</div> Rahul</div>
+                  <div class="task-meta-item"><i class="ti ti-calendar"></i> Dec 6</div>
+                  <span class="task-priority tp-high">High</span>
+                  <span class="badge badge-red">1 day late</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-heading" style="color:#CA8A04"><span>Due Today (3)</span></div>
+        <div class="card mb-4">
+          <div style="padding:4px 16px 8px">
+            <div class="task-row">
+              <div class="task-check" onclick="toggleCheck(this)"><i class="ti ti-check"></i></div>
+              <div class="task-body">
+                <div class="task-title">Sound check with live band</div>
+                <div class="task-meta">
+                  <div class="task-meta-item"><div class="avatar avatar-sm av-teal">PR</div> Priya</div>
+                  <div class="task-meta-item"><i class="ti ti-clock"></i> 9:00 AM</div>
+                  <span class="task-priority tp-high">High</span>
+                </div>
+              </div>
+            </div>
+            <div class="task-row">
+              <div class="task-check" onclick="toggleCheck(this)"><i class="ti ti-check"></i></div>
+              <div class="task-body">
+                <div class="task-title">Finalize guest seating arrangement</div>
+                <div class="task-meta">
+                  <div class="task-meta-item"><div class="avatar avatar-sm av-purple">AG</div> Arpita</div>
+                  <div class="task-meta-item"><i class="ti ti-clock"></i> 12:00 PM</div>
+                  <span class="task-priority tp-high">High</span>
+                </div>
+              </div>
+            </div>
+            <div class="task-row">
+              <div class="task-check" onclick="toggleCheck(this)"><i class="ti ti-check"></i></div>
+              <div class="task-body">
+                <div class="task-title">Print and laminate name badges</div>
+                <div class="task-meta">
+                  <div class="task-meta-item"><div class="avatar avatar-sm av-amber">RS</div> Rahul</div>
+                  <div class="task-meta-item"><i class="ti ti-clock"></i> 3:00 PM</div>
+                  <span class="task-priority tp-med">Medium</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="section-heading"><span>Upcoming (4)</span></div>
+        <div class="card mb-4">
+          <div style="padding:4px 16px 8px">
+            <div class="task-row">
+              <div class="task-check checked" onclick="toggleCheck(this)"><i class="ti ti-check"></i></div>
+              <div class="task-body">
+                <div class="task-title done">Stage setup and testing</div>
+                <div class="task-meta">
+                  <div class="task-meta-item"><div class="avatar avatar-sm av-amber">RS</div> Rahul</div>
+                  <div class="task-meta-item"><i class="ti ti-calendar"></i> Dec 4</div>
+                  <span class="badge badge-green">Done</span>
+                </div>
+              </div>
+            </div>
+            <div class="task-row">
+              <div class="task-check" onclick="toggleCheck(this)"><i class="ti ti-check"></i></div>
+              <div class="task-body">
+                <div class="task-title">Volunteer briefing session</div>
+                <div class="task-meta">
+                  <div class="task-meta-item"><div class="avatar avatar-sm av-purple">AG</div> Arpita</div>
+                  <div class="task-meta-item"><i class="ti ti-calendar"></i> Dec 8, 6 PM</div>
+                  <span class="task-priority tp-med">Medium</span>
+                </div>
+              </div>
+            </div>
+            <div class="task-row">
+              <div class="task-check" onclick="toggleCheck(this)"><i class="ti ti-check"></i></div>
+              <div class="task-body">
+                <div class="task-title">Stage breakdown post event</div>
+                <div class="task-meta">
+                  <div class="task-meta-item"><div class="avatar avatar-sm av-amber">RS</div> Rahul</div>
+                  <div class="task-meta-item"><i class="ti ti-calendar"></i> Dec 9, 10 PM</div>
+                  <span class="task-priority tp-low">Low</span>
+                </div>
+              </div>
+            </div>
+            <div class="task-row">
+              <div class="task-check" onclick="toggleCheck(this)"><i class="ti ti-check"></i></div>
+              <div class="task-body">
+                <div class="task-title">Submit post-event report to Faculty</div>
+                <div class="task-meta">
+                  <div class="task-meta-item"><div class="avatar avatar-sm av-purple">AG</div> Arpita</div>
+                  <div class="task-meta-item"><i class="ti ti-calendar"></i> Dec 12, 5 PM</div>
+                  <span class="task-priority tp-high">High</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Task Summary -->
+        <div class="card">
+          <div class="card-body">
+            <div class="card-title mb-3">Progress Summary</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div><div class="flex justify-between text-xs text-muted mb-1"><span>Overall completion</span><span>2 / 9 tasks</span></div><div class="progress h-2"><div class="progress-bar bar-amber" style="width:22%"></div></div></div>
+              <div><div class="flex justify-between text-xs text-muted mb-1"><span>Stage Management</span><span>3 / 4 tasks</span></div><div class="progress h-2"><div class="progress-bar bar-green" style="width:75%"></div></div></div>
+              <div><div class="flex justify-between text-xs text-muted mb-1"><span>Cultural</span><span>0 / 2 tasks</span></div><div class="progress h-2"><div class="progress-bar bar-red" style="width:0%"></div></div></div>
+              <div><div class="flex justify-between text-xs text-muted mb-1"><span>Hospitality</span><span>0 / 3 tasks</span></div><div class="progress h-2"><div class="progress-bar bar-red" style="width:0%"></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ RECEIPTS ══════ -->
+<div class="screen" id="screen-receipts">
+  <div class="topbar">
+    <div class="topbar-title">Receipts — HIBS 2024</div>
+    <div class="topbar-actions">
+      <div class="chips">
+        <span class="chip active">All</span>
+        <span class="chip">Pending</span>
+        <span class="chip">Approved</span>
+        <span class="chip">Rejected</span>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="openModal('scanReceipt')"><i class="ti ti-scan"></i> Scan Receipt</button>
+    </div>
+  </div>
+  <div class="content-area">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;margin-bottom:20px">
+      <div class="kpi-card"><div class="kpi-label">Total Submitted</div><div class="kpi-value">8</div></div>
+      <div class="kpi-card"><div class="kpi-label">Pending Review</div><div class="kpi-value" style="color:#CA8A04">3</div></div>
+      <div class="kpi-card"><div class="kpi-label">Approved</div><div class="kpi-value" style="color:var(--t400)">4</div></div>
+      <div class="kpi-card"><div class="kpi-label">Rejected</div><div class="kpi-value" style="color:var(--r400)">1</div></div>
+    </div>
+    <div class="card">
+      <table class="data-table">
+        <thead><tr><th>Receipt</th><th>Category</th><th>Amount</th><th>Submitted by</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr onclick="openModal('receiptDetail')">
+            <td><div class="flex gap-2 items-center"><div style="width:34px;height:34px;background:var(--r50);border-radius:8px;display:flex;align-items:center;justify-content:center"><i class="ti ti-receipt-2" style="color:var(--r400)"></i></div><div><div class="font-medium">Wireless Mic Rental</div><div class="text-xs text-muted">M/s Audio Plus</div></div></div></td>
+            <td>Cultural</td>
+            <td class="font-semibold">₹850</td>
+            <td><div class="flex gap-2 items-center"><div class="avatar avatar-sm av-teal">PR</div> Priya Rao</div></td>
+            <td>Dec 6, 12:30 PM</td>
+            <td><span class="badge badge-amber">Pending</span></td>
+            <td><div class="flex gap-1"><button class="btn btn-success btn-sm"><i class="ti ti-check"></i></button><button class="btn btn-danger btn-sm"><i class="ti ti-x"></i></button></div></td>
+          </tr>
+          <tr>
+            <td><div class="flex gap-2 items-center"><div style="width:34px;height:34px;background:var(--t50);border-radius:8px;display:flex;align-items:center;justify-content:center"><i class="ti ti-receipt-2" style="color:var(--t400)"></i></div><div><div class="font-medium">Traditional Outfit</div><div class="text-xs text-muted">Cultural program</div></div></div></td>
+            <td>Cultural</td>
+            <td class="font-semibold">₹200</td>
+            <td><div class="flex gap-2 items-center"><div class="avatar avatar-sm av-purple">AG</div> Arpita</div></td>
+            <td>Dec 5, 3 PM</td>
+            <td><span class="badge badge-green">Approved</span></td>
+            <td><button class="btn btn-ghost btn-sm"><i class="ti ti-eye"></i></button></td>
+          </tr>
+          <tr>
+            <td><div class="flex gap-2 items-center"><div style="width:34px;height:34px;background:var(--a50);border-radius:8px;display:flex;align-items:center;justify-content:center"><i class="ti ti-receipt-2" style="color:var(--a400)"></i></div><div><div class="font-medium">ITC Hotel — Catering</div><div class="text-xs text-muted">Hospitality services</div></div></div></td>
+            <td>Hospitality</td>
+            <td class="font-semibold">₹2,200</td>
+            <td><div class="flex gap-2 items-center"><div class="avatar avatar-sm av-amber">RS</div> Rahul</div></td>
+            <td>Dec 7, 9 AM</td>
+            <td><span class="badge badge-amber">Pending</span></td>
+            <td><div class="flex gap-1"><button class="btn btn-success btn-sm"><i class="ti ti-check"></i></button><button class="btn btn-danger btn-sm"><i class="ti ti-x"></i></button></div></td>
+          </tr>
+          <tr>
+            <td><div class="flex gap-2 items-center"><div style="width:34px;height:34px;background:var(--r50);border-radius:8px;display:flex;align-items:center;justify-content:center"><i class="ti ti-receipt-2" style="color:var(--r400)"></i></div><div><div class="font-medium">Stage Lighting Setup</div><div class="text-xs text-muted">M/s LightTech</div></div></div></td>
+            <td>Stage Mgmt</td>
+            <td class="font-semibold">₹800</td>
+            <td><div class="flex gap-2 items-center"><div class="avatar avatar-sm av-purple">AG</div> Arpita</div></td>
+            <td>Dec 6, 2 PM</td>
+            <td><span class="badge badge-red">Rejected</span></td>
+            <td><button class="btn btn-secondary btn-sm"><i class="ti ti-refresh"></i> Resubmit</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ VOLUNTEERS ══════ -->
+<div class="screen" id="screen-volunteers">
+  <div class="topbar">
+    <div class="topbar-title">Volunteers — HIBS 2024</div>
+    <div class="topbar-actions">
+      <div class="chips">
+        <span class="chip active">All</span>
+        <span class="chip">Stage</span>
+        <span class="chip">Cultural</span>
+        <span class="chip">Hospitality</span>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="openModal('inviteVol')"><i class="ti ti-user-plus"></i> Invite</button>
+    </div>
+  </div>
+  <div class="content-area">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px">
+      <div class="kpi-card"><div class="kpi-label">Total Volunteers</div><div class="kpi-value">12</div></div>
+      <div class="kpi-card"><div class="kpi-label">Confirmed</div><div class="kpi-value" style="color:var(--t400)">8</div></div>
+      <div class="kpi-card"><div class="kpi-label">Pending</div><div class="kpi-value" style="color:#CA8A04">3</div></div>
+      <div class="kpi-card"><div class="kpi-label">Avg Task Completion</div><div class="kpi-value">72%</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div class="vol-card">
+        <div class="vol-header">
+          <div class="avatar avatar-md av-purple">RS</div>
+          <div class="vol-info"><div class="vol-name">Rahul Sharma</div><div class="vol-role">Stage Management</div></div>
+          <span class="badge badge-green">Confirmed</span>
+        </div>
+        <div class="vol-progress">
+          <div class="vol-progress-label"><span>Tasks complete</span><span>3 / 5</span></div>
+          <div class="progress h-2"><div class="progress-bar bar-amber" style="width:60%"></div></div>
+        </div>
+        <div style="font-size:11px;color:var(--g400);margin-bottom:10px"><i class="ti ti-phone" style="font-size:12px"></i> +91-98XXXXXX &nbsp;·&nbsp; Dec 3 joined</div>
+        <div class="vol-actions">
+          <button class="btn btn-secondary btn-sm" onclick="openModal('volDetail')"><i class="ti ti-list-details"></i> Tasks</button>
+          <button class="btn btn-ghost btn-sm"><i class="ti ti-message"></i></button>
+        </div>
+      </div>
+      <div class="vol-card">
+        <div class="vol-header">
+          <div class="avatar avatar-md av-teal">PR</div>
+          <div class="vol-info"><div class="vol-name">Priya Rao</div><div class="vol-role">Cultural</div></div>
+          <span class="badge badge-green">Confirmed</span>
+        </div>
+        <div class="vol-progress">
+          <div class="vol-progress-label"><span>Tasks complete</span><span>1 / 3</span></div>
+          <div class="progress h-2"><div class="progress-bar bar-red" style="width:33%"></div></div>
+        </div>
+        <div style="font-size:11px;color:var(--g400);margin-bottom:10px"><i class="ti ti-phone" style="font-size:12px"></i> +91-97XXXXXX &nbsp;·&nbsp; Dec 4 joined</div>
+        <div class="vol-actions">
+          <button class="btn btn-secondary btn-sm"><i class="ti ti-list-details"></i> Tasks</button>
+          <button class="btn btn-ghost btn-sm"><i class="ti ti-message"></i></button>
+        </div>
+      </div>
+      <div class="vol-card">
+        <div class="vol-header">
+          <div class="avatar avatar-md av-amber">MK</div>
+          <div class="vol-info"><div class="vol-name">Mohan Kumar</div><div class="vol-role">Hospitality</div></div>
+          <span class="badge badge-amber">Pending</span>
+        </div>
+        <div style="font-size:12px;color:var(--g400);margin-bottom:10px;padding:8px;background:var(--g50);border-radius:var(--radius-sm)">Invite sent Dec 4 — awaiting confirmation. Sent 2 reminders.</div>
+        <div class="vol-actions">
+          <button class="btn btn-secondary btn-sm"><i class="ti ti-send"></i> Resend Invite</button>
+          <button class="btn btn-danger btn-sm"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>
+      <div class="vol-card" style="border: 2px dashed var(--border); background: var(--g50); display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="openModal('inviteVol')">
+        <div style="text-align:center;padding:20px"><i class="ti ti-user-plus" style="font-size:28px;color:var(--g300);display:block;margin-bottom:8px"></i><div style="font-size:13px;color:var(--g400)">Invite volunteer</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ GUESTS ══════ -->
+<div class="screen" id="screen-guests">
+  <div class="topbar">
+    <div class="topbar-title">Guests — HIBS 2024</div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm"><i class="ti ti-id-badge-2"></i> Print Badges</button>
+      <button class="btn btn-secondary btn-sm"><i class="ti ti-download"></i> Export List</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal('addGuest')"><i class="ti ti-plus"></i> Add Guest</button>
+    </div>
+  </div>
+  <div class="content-area">
+    <div class="card">
+      <table class="data-table">
+        <thead><tr><th>Guest</th><th>Organisation</th><th>Role</th><th>Stay</th><th>Dietary</th><th>Room</th><th>RSVP</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="flex gap-2 items-center"><div class="avatar avatar-sm av-purple">AS</div><div><div class="font-medium">Dr. Anand Sharma</div><div class="text-xs text-muted">anandsharma@iitm.ac.in</div></div></div></td>
+            <td>IITM Innovation Centre</td>
+            <td><span class="badge badge-purple">Keynote</span></td>
+            <td>Dec 8–10 (2 nights)</td>
+            <td>Vegetarian</td>
+            <td>Room 204</td>
+            <td><span class="badge badge-green">Confirmed</span></td>
+          </tr>
+          <tr>
+            <td><div class="flex gap-2 items-center"><div class="avatar avatar-sm av-teal">NP</div><div><div class="font-medium">Prof. Neha Patel</div><div class="text-xs text-muted">npatel@iima.ac.in</div></div></div></td>
+            <td>IIM Ahmedabad</td>
+            <td><span class="badge badge-blue">Panelist</span></td>
+            <td>Dec 9–10 (1 night)</td>
+            <td>Jain</td>
+            <td>Room 208</td>
+            <td><span class="badge badge-amber">Pending</span></td>
+          </tr>
+          <tr>
+            <td><div class="flex gap-2 items-center"><div class="avatar avatar-sm av-amber">VR</div><div><div class="font-medium">Vikram Rajan</div><div class="text-xs text-muted">vrajan@techcorp.in</div></div></div></td>
+            <td>TechCorp India</td>
+            <td><span class="badge badge-amber">Sponsor</span></td>
+            <td>Day only</td>
+            <td>No restriction</td>
+            <td>—</td>
+            <td><span class="badge badge-green">Confirmed</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ NOTIFICATIONS ══════ -->
+<div class="screen" id="screen-notifications">
+  <div class="topbar">
+    <div class="topbar-title">Notifications</div>
+    <div class="topbar-actions">
+      <div class="chips">
+        <span class="chip active">All</span>
+        <span class="chip">Budget</span>
+        <span class="chip">Tasks</span>
+        <span class="chip">Approvals</span>
+        <span class="chip">Team</span>
+      </div>
+      <button class="btn btn-ghost btn-sm">Mark all read</button>
+    </div>
+  </div>
+  <div class="content-area no-pad">
+    <div style="padding:16px 24px 4px;font-size:12px;font-weight:600;color:var(--g400);text-transform:uppercase;letter-spacing:0.5px">Today</div>
+    <div class="notif-row unread">
+      <div class="notif-icon" style="background:var(--r50)"><i class="ti ti-alert-triangle" style="color:var(--r400);font-size:18px"></i></div>
+      <div class="notif-body">
+        <div class="notif-text"><strong>Stage Management at 95% budget</strong> — ₹150 remaining. Consider reallocating from Miscellaneous.</div>
+        <div class="notif-time">2 hours ago · Budget Alert</div>
+      </div>
+      <div class="notif-dot"></div>
+    </div>
+    <div class="notif-row unread">
+      <div class="notif-icon" style="background:var(--a50)"><i class="ti ti-receipt-2" style="color:var(--a400);font-size:18px"></i></div>
+      <div class="notif-body">
+        <div class="notif-text">Priya Rao submitted receipt for <strong>₹850</strong> — Wireless Mic Rental. Awaiting Finance Manager approval.</div>
+        <div class="notif-time">4 hours ago · Receipt Approval</div>
+      </div>
+      <div class="notif-dot"></div>
+    </div>
+    <div class="notif-row unread">
+      <div class="notif-icon" style="background:var(--t50)"><i class="ti ti-checkbox" style="color:var(--t400);font-size:18px"></i></div>
+      <div class="notif-body">
+        <div class="notif-text">Rahul Sharma completed task <strong>"AV vendor booking"</strong>.</div>
+        <div class="notif-time">5 hours ago · Task Update</div>
+      </div>
+      <div class="notif-dot"></div>
+    </div>
+    <div class="notif-row unread">
+      <div class="notif-icon" style="background:var(--p50)"><i class="ti ti-bell" style="color:var(--p500);font-size:18px"></i></div>
+      <div class="notif-body">
+        <div class="notif-text">You have <strong>2 tasks overdue</strong> — Book AV vendor payment (Dec 5) and Confirm catering headcount (Dec 6).</div>
+        <div class="notif-time">This morning · Task Alert</div>
+      </div>
+      <div class="notif-dot"></div>
+    </div>
+    <div style="padding:16px 24px 4px;font-size:12px;font-weight:600;color:var(--g400);text-transform:uppercase;letter-spacing:0.5px">Yesterday</div>
+    <div class="notif-row">
+      <div class="notif-icon" style="background:#DBEAFE"><i class="ti ti-currency-rupee" style="color:#2563EB;font-size:18px"></i></div>
+      <div class="notif-body">
+        <div class="notif-text">Dr. Puran Singh <strong>approved</strong> the HIBS 2024 total budget of ₹10,000.</div>
+        <div class="notif-time">Dec 7, 11 AM · Budget Approved</div>
+      </div>
+      <div class="notif-dot read"></div>
+    </div>
+    <div class="notif-row">
+      <div class="notif-icon" style="background:var(--t50)"><i class="ti ti-user-plus" style="color:var(--t400);font-size:18px"></i></div>
+      <div class="notif-body">
+        <div class="notif-text">Mohan Kumar joined HIBS 2024 as <strong>Hospitality volunteer</strong>.</div>
+        <div class="notif-time">Dec 7, 9 AM · Team Update</div>
+      </div>
+      <div class="notif-dot read"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ ANALYTICS ══════ -->
+<div class="screen" id="screen-analytics">
+  <div class="topbar">
+    <div class="topbar-title">Analytics — IIT Mandi SOM</div>
+    <div class="topbar-actions">
+      <select class="form-input" style="width:160px;padding:6px 10px"><option>This Semester</option><option>This Academic Year</option><option>All Time</option></select>
+    </div>
+  </div>
+  <div class="content-area">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px">
+      <div class="kpi-card"><div class="kpi-icon" style="background:var(--p50)"><i class="ti ti-calendar-event" style="color:var(--p600)"></i></div><div class="kpi-label">Total Events</div><div class="kpi-value">6</div></div>
+      <div class="kpi-card"><div class="kpi-icon" style="background:#DBEAFE"><i class="ti ti-currency-rupee" style="color:#2563EB"></i></div><div class="kpi-label">Total Budget Allocated</div><div class="kpi-value">₹58,000</div></div>
+      <div class="kpi-card"><div class="kpi-icon" style="background:var(--r50)"><i class="ti ti-receipt-2" style="color:var(--r400)"></i></div><div class="kpi-label">Total Spent</div><div class="kpi-value" style="color:var(--r400)">₹52,400</div></div>
+      <div class="kpi-card"><div class="kpi-icon" style="background:var(--t50)"><i class="ti ti-percentage" style="color:var(--t400)"></i></div><div class="kpi-label">Avg Utilization</div><div class="kpi-value" style="color:var(--t400)">90.3%</div></div>
+    </div>
+    <div class="analytics-grid mb-4">
+      <div class="chart-card">
+        <div class="chart-title">Budget vs. Spend by Event</div>
+        <div class="chart-sub">All events this semester</div>
+        <canvas id="eventBarChart" height="180"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Spend Distribution by Category</div>
+        <div class="chart-sub">Across all 6 events</div>
+        <canvas id="catDonutChart" height="180"></canvas>
+      </div>
+    </div>
+    <div class="analytics-grid mb-4">
+      <div class="chart-card">
+        <div class="chart-title">Monthly Spend Trend</div>
+        <div class="chart-sub">Budget consumption over time</div>
+        <canvas id="trendChart" height="180"></canvas>
+      </div>
+      <div>
+        <div class="section-heading">AI-Generated Insights</div>
+        <div class="insight insight-warn"><i class="ti ti-trending-up"></i><div class="insight-text"><strong>Hospitality overspends</strong> consistently by 8% across all 6 events. Consider revising the standard Hospitality budget template upward by 10%.</div></div>
+        <div class="insight"><i class="ti ti-award"></i><div class="insight-text"><strong>HIBS 2024</strong> has the highest projected efficiency at 92% utilization — below the historical overspend threshold.</div></div>
+        <div class="insight insight-ok"><i class="ti ti-calendar"></i><div class="insight-text"><strong>December</strong> is your highest-spend month. Pre-allocating an additional 15% buffer in Oct planning will reduce last-minute stress.</div></div>
+        <div class="insight"><i class="ti ti-users"></i><div class="insight-text"><strong>Volunteer task completion</strong> averages 72% across events. Sending reminders 48h before deadlines increased completion by 23% in Iqnitia.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ REPORTS ══════ -->
+<div class="screen" id="screen-reports">
+  <div class="topbar">
+    <div class="topbar-title">Reports & Export</div>
+  </div>
+  <div class="content-area">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+      <div class="card" style="cursor:pointer" onclick="openModal('reportPreview')">
+        <div class="card-body">
+          <div class="flex gap-3 items-center mb-3">
+            <div style="width:46px;height:46px;background:var(--r50);border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="ti ti-report-money" style="font-size:22px;color:var(--r400)"></i></div>
+            <div><div class="font-semibold" style="font-size:14px">Budget Summary Report</div><div class="text-xs text-muted">Total vs actual · Variance · Category breakdown</div></div>
+          </div>
+          <div class="flex gap-2"><span class="badge badge-gray">PDF</span><span class="badge badge-gray">Excel</span><span class="badge badge-gray">CSV</span></div>
+        </div>
+      </div>
+      <div class="card" style="cursor:pointer">
+        <div class="card-body">
+          <div class="flex gap-3 items-center mb-3">
+            <div style="width:46px;height:46px;background:var(--t50);border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="ti ti-list-details" style="font-size:22px;color:var(--t400)"></i></div>
+            <div><div class="font-semibold" style="font-size:14px">Expense Ledger</div><div class="text-xs text-muted">All line items · Chronological · Filterable</div></div>
+          </div>
+          <div class="flex gap-2"><span class="badge badge-gray">Excel</span><span class="badge badge-gray">CSV</span></div>
+        </div>
+      </div>
+      <div class="card" style="cursor:pointer">
+        <div class="card-body">
+          <div class="flex gap-3 items-center mb-3">
+            <div style="width:46px;height:46px;background:var(--a50);border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="ti ti-users" style="font-size:22px;color:var(--a400)"></i></div>
+            <div><div class="font-semibold" style="font-size:14px">Volunteer Activity Report</div><div class="text-xs text-muted">Roster · Departments · Task completion</div></div>
+          </div>
+          <div class="flex gap-2"><span class="badge badge-gray">PDF</span><span class="badge badge-gray">Excel</span></div>
+        </div>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="openModal('reportPreview')">
+        <div class="card-body">
+          <div class="flex gap-3 items-center mb-3">
+            <div style="width:46px;height:46px;background:var(--p50);border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="ti ti-file-description" style="font-size:22px;color:var(--p600)"></i></div>
+            <div><div class="font-semibold" style="font-size:14px">Post-Event Summary</div><div class="text-xs text-muted">1-page PDF · Faculty advisor sign-off ready</div></div>
+          </div>
+          <div class="flex gap-2"><span class="badge badge-gray">Branded PDF</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- Preview card -->
+    <div class="card">
+      <div class="card-header" style="padding-bottom:14px"><div class="card-title">Report Preview — HIBS 2024 Budget Summary</div></div>
+      <div class="card-body" style="background:var(--g50);border-radius:0 0 var(--radius-lg) var(--radius-lg)">
+        <div style="max-width:600px;margin:0 auto;background:var(--white);border-radius:var(--radius-lg);padding:24px;border:1px solid var(--border)">
+          <div style="text-align:center;margin-bottom:20px;border-bottom:2px solid var(--p600);padding-bottom:16px">
+            <div style="font-size:11px;color:var(--g400);margin-bottom:4px">Indian Institute of Technology Mandi · School of Management</div>
+            <div style="font-size:20px;font-weight:700;color:var(--g900)">HIBS 2024 — Budget Summary Report</div>
+            <div style="font-size:12px;color:var(--g400);margin-top:4px">December 9–11, 2024 · Generated Dec 9, 2024</div>
+          </div>
+          <div style="display:flex;gap:20px;margin-bottom:20px">
+            <div style="flex:1;text-align:center;padding:14px;background:var(--g50);border-radius:var(--radius)"><div style="font-size:22px;font-weight:700;color:var(--g900)">₹10,000</div><div style="font-size:11px;color:var(--g400)">Total Budget</div></div>
+            <div style="flex:1;text-align:center;padding:14px;background:var(--r50);border-radius:var(--radius)"><div style="font-size:22px;font-weight:700;color:var(--r400)">₹5,000</div><div style="font-size:11px;color:var(--g400)">Total Spent</div></div>
+            <div style="flex:1;text-align:center;padding:14px;background:var(--t50);border-radius:var(--radius)"><div style="font-size:22px;font-weight:700;color:var(--t400)">₹5,000</div><div style="font-size:11px;color:var(--g400)">Remaining</div></div>
+          </div>
+          <table style="width:100%;border-collapse:collapse;font-size:12px">
+            <thead><tr style="background:var(--p600);color:#fff"><th style="padding:8px 12px;text-align:left">Category</th><th style="padding:8px 12px;text-align:right">Budget</th><th style="padding:8px 12px;text-align:right">Spent</th><th style="padding:8px 12px;text-align:right">Variance</th><th style="padding:8px 12px;text-align:right">%</th></tr></thead>
+            <tbody>
+              <tr style="background:#fff"><td style="padding:8px 12px;border-bottom:1px solid var(--border)">Cultural</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);text-align:right">₹2,000</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);text-align:right;color:var(--r400)">₹1,800</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);text-align:right;color:var(--t600)">+₹200</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);text-align:right;color:var(--r400)">90%</td></tr>
+              <tr style="background:var(--g50)"><td style="padding:8px 12px;border-bottom:1px solid var(--border)">Hospitality</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);text-align:right">₹2,000</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);text-align:right">₹1,500</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);text-align:right;color:var(--t600)">+₹500</td><td style="padding:8px 12px;border-bottom:1px solid var(--border);text-align:right;color:#CA8A04">75%</td></tr>
+              <tr style="background:#fff"><td style="padding:8px 12px">Misc</td><td style="padding:8px 12px;text-align:right">₹2,000</td><td style="padding:8px 12px;text-align:right">₹500</td><td style="padding:8px 12px;text-align:right;color:var(--t600)">+₹1,500</td><td style="padding:8px 12px;text-align:right;color:var(--t400)">25%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:16px">
+          <button class="btn btn-primary"><i class="ti ti-download"></i> Download PDF</button>
+          <button class="btn btn-secondary"><i class="ti ti-file-spreadsheet"></i> Download Excel</button>
+          <button class="btn btn-secondary"><i class="ti ti-mail"></i> Email to Faculty</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ AI INSIGHTS ══════ -->
+<div class="screen" id="screen-ai">
+  <div class="topbar">
+    <div class="topbar-title">AI Budget Prediction</div>
+    <div class="topbar-actions"><span class="badge badge-purple" style="padding:5px 12px;font-size:12px"><i class="ti ti-sparkles"></i> Phase 3 Feature</span></div>
+  </div>
+  <div class="content-area">
+    <div class="ai-section">
+      <div class="ai-badge"><i class="ti ti-sparkles" style="font-size:14px"></i> Powered by Eventra AI — Phase 3</div>
+      <div class="ai-title">Budget Prediction for Exodia 2025</div>
+      <div class="ai-sub">Based on 6 historical events at IIT Mandi SOM · Confidence: 78%</div>
+      <div class="ai-pred-grid">
+        <div class="ai-pred-card"><div class="ai-pred-label">Predicted Budget</div><div class="ai-pred-val">₹11,200</div><div class="ai-pred-sub">±₹800 variance</div></div>
+        <div class="ai-pred-card"><div class="ai-pred-label">Event Type</div><div class="ai-pred-val" style="font-size:14px">Cultural Fest</div><div class="ai-pred-sub">3 past events</div></div>
+        <div class="ai-pred-card"><div class="ai-pred-label">Attendance</div><div class="ai-pred-val">500</div><div class="ai-pred-sub">expected guests</div></div>
+      </div>
+      <div class="ai-risk"><i class="ti ti-alert-triangle" style="font-size:16px;flex-shrink:0;margin-top:1px"></i><div>Hospitality costs have increased 12% YoY at IIT Mandi. Stage vendor rates have risen 8%. Budget ₹500 additional buffer in these categories.</div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div class="card">
+        <div class="card-header" style="padding-bottom:14px"><div class="card-title">Suggested Category Breakdown</div><div class="card-sub">Based on historical event patterns</div></div>
+        <div class="card-body" style="padding-top:4px">
+          <div class="cat-list">
+            <div class="cat-row"><div class="cat-icon" style="background:#FEE2E2">🎭</div><div class="cat-info"><div class="cat-name">Cultural</div><div class="cat-amounts">Historical avg: ₹2,800</div></div><div style="font-size:13px;font-weight:600;color:var(--p700)">₹3,200</div><span class="text-xs text-muted">28%</span></div>
+            <div class="cat-row"><div class="cat-icon" style="background:#FEF9C3">🍽️</div><div class="cat-info"><div class="cat-name">Hospitality</div><div class="cat-amounts">+12% from last year</div></div><div style="font-size:13px;font-weight:600;color:var(--p700)">₹3,000</div><span class="text-xs text-muted">27%</span></div>
+            <div class="cat-row"><div class="cat-icon" style="background:#DCFCE7">🎤</div><div class="cat-info"><div class="cat-name">Stage Mgmt</div><div class="cat-amounts">+8% vendor rate hike</div></div><div style="font-size:13px;font-weight:600;color:var(--p700)">₹2,400</div><span class="text-xs text-muted">21%</span></div>
+            <div class="cat-row"><div class="cat-icon" style="background:var(--p50)">👥</div><div class="cat-info"><div class="cat-name">Volunteers</div><div class="cat-amounts">Stable YoY</div></div><div style="font-size:13px;font-weight:600;color:var(--p700)">₹1,200</div><span class="text-xs text-muted">11%</span></div>
+            <div class="cat-row"><div class="cat-icon" style="background:var(--g100)">📦</div><div class="cat-info"><div class="cat-name">Miscellaneous</div><div class="cat-amounts">5% contingency buffer</div></div><div style="font-size:13px;font-weight:600;color:var(--p700)">₹1,400</div><span class="text-xs text-muted">13%</span></div>
+          </div>
+          <div style="margin-top:12px;padding:10px 12px;background:var(--g50);border-radius:var(--radius);font-size:12px;color:var(--g500);border:1px solid var(--border)">This prediction requires 3+ historical events of the same type. Accuracy improves with each event added to Eventra.</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card mb-4">
+          <div class="card-header" style="padding-bottom:14px"><div class="card-title">Historical Comparison</div><div class="card-sub">Budget efficiency across similar events</div></div>
+          <div class="card-body" style="padding-top:4px">
+            <canvas id="aiChart" height="180"></canvas>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" style="padding-bottom:14px"><div class="card-title">Apply Prediction to New Event</div></div>
+          <div class="card-body">
+            <div class="form-group"><div class="form-label">Event Name</div><input class="form-input" placeholder="Exodia 2025" value="Exodia 2025"></div>
+            <div class="form-group"><div class="form-label">Expected Attendance</div><input class="form-input" type="number" value="500"></div>
+            <button class="btn btn-primary w-full" style="justify-content:center"><i class="ti ti-sparkles"></i> Apply AI Budget to New Event</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ CALENDAR ══════ -->
+<div class="screen" id="screen-calendar">
+  <div class="topbar">
+    <div class="topbar-title">Calendar — December 2024</div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm"><i class="ti ti-chevron-left"></i></button>
+      <button class="btn btn-ghost btn-sm"><i class="ti ti-chevron-right"></i></button>
+      <div class="chips"><span class="chip active">Month</span><span class="chip">Timeline</span><span class="chip">Day</span></div>
+    </div>
+  </div>
+  <div class="content-area">
+    <div style="display:grid;grid-template-columns:1fr 300px;gap:20px">
+      <div class="card">
+        <div class="card-body">
+          <div class="cal-grid" style="gap:6px">
+            <div class="cal-day-name">Sun</div><div class="cal-day-name">Mon</div><div class="cal-day-name">Tue</div><div class="cal-day-name">Wed</div><div class="cal-day-name">Thu</div><div class="cal-day-name">Fri</div><div class="cal-day-name">Sat</div>
+            <div class="cal-day empty">1</div><div class="cal-day empty">2</div><div class="cal-day empty">3</div><div class="cal-day empty">4</div>
+            <div class="cal-day has-event" style="background:rgba(127,119,221,0.08);border-radius:6px">5</div>
+            <div class="cal-day has-event" style="background:rgba(127,119,221,0.08);border-radius:6px">6</div>
+            <div class="cal-day has-event" style="background:rgba(127,119,221,0.08);border-radius:6px">7</div>
+            <div class="cal-day empty">8</div>
+            <div class="cal-day today" style="border-radius:8px">9</div>
+            <div class="cal-day range" style="border-radius:6px">10</div>
+            <div class="cal-day range" style="border-radius:6px">11</div>
+            <div class="cal-day">12</div><div class="cal-day">13</div><div class="cal-day">14</div><div class="cal-day">15</div>
+            <div class="cal-day">16</div><div class="cal-day">17</div><div class="cal-day">18</div><div class="cal-day">19</div><div class="cal-day">20</div><div class="cal-day">21</div><div class="cal-day">22</div>
+            <div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day">25</div><div class="cal-day">26</div><div class="cal-day">27</div><div class="cal-day">28</div><div class="cal-day">29</div>
+            <div class="cal-day">30</div><div class="cal-day">31</div>
+          </div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+            <div style="font-size:12px;font-weight:600;color:var(--g700);margin-bottom:10px">HIBS 2024 — Event Timeline</div>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-time">Dec 4–6</div>
+                <div class="timeline-title">Pre-event Setup Phase</div>
+                <div class="timeline-sub">Venue prep, AV setup, vendor coordination</div>
+                <div class="timeline-bar-item">Tasks: 3 complete, 1 pending</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-time">Dec 7</div>
+                <div class="timeline-title">Volunteer Onboarding</div>
+                <div class="timeline-sub">12 volunteers briefed, roles assigned</div>
+              </div>
+              <div class="timeline-item active">
+                <div class="timeline-time">Dec 9 — TODAY</div>
+                <div class="timeline-title">Event Day 1 — Inauguration</div>
+                <div class="timeline-sub">Keynote: Dr. Anand Sharma · Panel sessions · Cultural evening</div>
+                <div class="timeline-bar-item" style="background:var(--p600);border-left-color:var(--p800);color:#fff">Live now · 6 tasks pending today</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-time">Dec 10</div>
+                <div class="timeline-title">Event Day 2 — Workshops</div>
+                <div class="timeline-sub">Industry workshops, networking lunch, panel discussion</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-time">Dec 11</div>
+                <div class="timeline-title">Event Day 3 — Valedictory</div>
+                <div class="timeline-sub">Prize distribution, stage breakdown, expense reconciliation</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-time">Dec 12</div>
+                <div class="timeline-title">Post-Event Reporting</div>
+                <div class="timeline-sub">Submit budget report to Faculty Advisor · Archive</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card mb-4">
+          <div class="card-header" style="padding-bottom:12px"><div class="card-title">Dec 9 — Today</div><div class="card-sub">6 items scheduled</div></div>
+          <div style="padding:0 20px 14px;display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+              <div style="width:2px;background:var(--r400);border-radius:1px;flex-shrink:0"></div>
+              <div><div style="font-size:11px;color:var(--g400)">9:00 AM</div><div style="font-size:13px;font-weight:500;color:var(--g900)">Sound Check</div><div style="font-size:11px;color:var(--g400)">Priya · Auditorium</div></div>
+            </div>
+            <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+              <div style="width:2px;background:var(--p500);border-radius:1px;flex-shrink:0"></div>
+              <div><div style="font-size:11px;color:var(--g400)">10:00 AM</div><div style="font-size:13px;font-weight:500;color:var(--g900)">Inauguration Ceremony</div><div style="font-size:11px;color:var(--g400)">Main Auditorium · All team</div></div>
+            </div>
+            <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+              <div style="width:2px;background:var(--t400);border-radius:1px;flex-shrink:0"></div>
+              <div><div style="font-size:11px;color:var(--g400)">12:00 PM</div><div style="font-size:13px;font-weight:500;color:var(--g900)">Keynote: Dr. Anand Sharma</div><div style="font-size:11px;color:var(--g400)">Main Stage</div></div>
+            </div>
+            <div style="display:flex;gap:10px;padding:8px 0">
+              <div style="width:2px;background:#CA8A04;border-radius:1px;flex-shrink:0"></div>
+              <div><div style="font-size:11px;color:var(--g400)">3:00 PM</div><div style="font-size:13px;font-weight:500;color:var(--g900)">Print name badges</div><div style="font-size:11px;color:var(--g400)">Rahul · Admin Block</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" style="padding-bottom:12px"><div class="card-title">Upcoming Events</div></div>
+          <div style="padding:0 20px 14px;display:flex;flex-direction:column;gap:8px">
+            <div style="padding:10px;background:var(--a50);border-radius:var(--radius);border:1px solid rgba(186,117,23,0.2)"><div style="font-size:12px;font-weight:600;color:var(--a600)">Exodia 2025</div><div style="font-size:11px;color:var(--a400)">Jan 15–17 · In planning</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ SETTINGS ══════ -->
+<div class="screen" id="screen-settings">
+  <div class="topbar"><div class="topbar-title">Settings</div></div>
+  <div class="content-area">
+    <div style="display:grid;grid-template-columns:240px 1fr;gap:20px">
+      <div>
+        <div class="card">
+          <div style="padding:20px;border-bottom:1px solid var(--border)">
+            <div class="avatar avatar-lg av-purple" style="margin-bottom:10px">AG</div>
+            <div style="font-size:15px;font-weight:600;color:var(--g900)">Arpita Gupta</div>
+            <div style="font-size:12px;color:var(--g400)" id="settings-role-label">Event Coordinator</div>
+            <div style="font-size:11px;color:var(--p600);margin-top:2px">arpita@iitmandi.ac.in</div>
+          </div>
+          <div style="padding:10px 0">
+            <div class="nav-item active" style="color:var(--g800);margin:2px 8px;padding:8px 10px"><i class="ti ti-user"></i> Profile</div>
+            <div class="nav-item" style="color:var(--g500);margin:2px 8px;padding:8px 10px"><i class="ti ti-building"></i> Institution</div>
+            <div class="nav-item" style="color:var(--g500);margin:2px 8px;padding:8px 10px"><i class="ti ti-bell"></i> Notifications</div>
+            <div class="nav-item" style="color:var(--g500);margin:2px 8px;padding:8px 10px"><i class="ti ti-shield"></i> Permissions</div>
+            <div class="nav-item" style="color:var(--g500);margin:2px 8px;padding:8px 10px"><i class="ti ti-palette"></i> Appearance</div>
+            <div class="nav-item" style="color:var(--r400);margin:2px 8px;padding:8px 10px"><i class="ti ti-logout"></i> Sign Out</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card mb-4">
+          <div class="card-header" style="padding-bottom:16px"><div class="card-title">Profile Information</div></div>
+          <div class="card-body">
+            <div class="form-row">
+              <div class="form-group"><div class="form-label">First Name</div><input class="form-input" value="Arpita"></div>
+              <div class="form-group"><div class="form-label">Last Name</div><input class="form-input" value="Gupta"></div>
+            </div>
+            <div class="form-group"><div class="form-label">Email</div><input class="form-input" value="arpita@iitmandi.ac.in"></div>
+            <div class="form-row">
+              <div class="form-group"><div class="form-label">Institution</div><input class="form-input" value="IIT Mandi"></div>
+              <div class="form-group"><div class="form-label">Department</div><input class="form-input" value="School of Management"></div>
+            </div>
+            <div class="form-group"><div class="form-label">Current Role</div>
+              <select class="form-input" id="roleSelect" onchange="switchRoleFromSettings(this.value)">
+                <option value="coordinator" selected>Event Coordinator</option>
+                <option value="finance">Finance Manager</option>
+                <option value="faculty">Faculty Advisor</option>
+                <option value="volunteer">Volunteer</option>
+              </select>
+            </div>
+            <button class="btn btn-primary"><i class="ti ti-device-floppy"></i> Save Changes</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" style="padding-bottom:16px"><div class="card-title">Permission Matrix</div><div class="card-sub">Your role's access level</div></div>
+          <div class="card-body" style="padding-top:4px;overflow-x:auto">
+            <table class="data-table" style="font-size:12px" id="permTable">
+              <thead><tr><th>Feature</th><th>Coordinator</th><th>Finance Mgr</th><th>Faculty</th><th>Volunteer</th></tr></thead>
+              <tbody>
+                <tr><td>Create/edit events</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--r400)">✗ None</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--r400)">✗ None</td></tr>
+                <tr><td>Add/edit expenses</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--r400)">✗ None</td><td style="color:var(--r400)">✗ None</td></tr>
+                <tr><td>Approve expenses</td><td style="color:var(--r400)">✗ None</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--r400)">✗ None</td></tr>
+                <tr><td>View budget</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--r400)">✗ None</td></tr>
+                <tr><td>Assign tasks</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--r400)">✗ None</td><td style="color:var(--r400)">✗ None</td><td style="color:var(--r400)">✗ None</td></tr>
+                <tr><td>Complete tasks</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--r400)">✗ None</td><td style="color:var(--r400)">✗ None</td><td style="color:var(--t400)">✓ Full</td></tr>
+                <tr><td>Export reports</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--r400)">✗ None</td></tr>
+                <tr><td>Manage volunteers</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--r400)">✗ None</td><td style="color:var(--r400)">✗ None</td><td style="color:var(--r400)">✗ None</td></tr>
+                <tr><td>View analytics</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--t400)">✓ Full</td><td style="color:var(--r400)">✗ None</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ EXPENSES ══════ -->
+<div class="screen" id="screen-expenses">
+  <div class="topbar">
+    <div class="topbar-title">Expenses — HIBS 2024</div>
+    <div class="topbar-actions">
+      <select class="form-input" style="width:140px;padding:6px 10px"><option>All Categories</option><option>Cultural</option><option>Hospitality</option><option>Stage Mgmt</option></select>
+      <button class="btn btn-primary btn-sm" onclick="openModal('addExpense')"><i class="ti ti-plus"></i> Add Expense</button>
+    </div>
+  </div>
+  <div class="content-area">
+    <div class="card">
+      <table class="data-table">
+        <thead><tr><th>Description</th><th>Category</th><th>Amount</th><th>Added by</th><th>Date</th><th>Receipt</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="font-medium">Traditional Outfit — Cultural Program</td><td>Cultural</td><td class="font-semibold">₹200</td><td><div class="flex gap-2 items-center"><div class="avatar avatar-sm av-purple">AG</div> Arpita</div></td><td>Dec 5</td><td><i class="ti ti-receipt-2" style="color:var(--t400)"></i></td><td><span class="badge badge-green">Approved</span></td></tr>
+          <tr><td class="font-medium">Wireless Mic Rental — M/s Audio Plus</td><td>Cultural</td><td class="font-semibold">₹850</td><td><div class="flex gap-2 items-center"><div class="avatar avatar-sm av-teal">PR</div> Priya</div></td><td>Dec 6</td><td><i class="ti ti-receipt-2" style="color:var(--a400)"></i></td><td><span class="badge badge-amber">Pending</span></td></tr>
+          <tr><td class="font-medium">Stage Lighting Setup — M/s LightTech</td><td>Stage Mgmt</td><td class="font-semibold">₹450</td><td><div class="flex gap-2 items-center"><div class="avatar avatar-sm av-purple">AG</div> Arpita</div></td><td>Dec 6</td><td><i class="ti ti-receipt-off" style="color:var(--g300)"></i></td><td><span class="badge badge-red">No Receipt</span></td></tr>
+          <tr><td class="font-medium">Sound System Rental</td><td>Cultural</td><td class="font-semibold">₹300</td><td><div class="flex gap-2 items-center"><div class="avatar avatar-sm av-teal">PR</div> Priya</div></td><td>Dec 7</td><td><i class="ti ti-receipt-2" style="color:var(--t400)"></i></td><td><span class="badge badge-green">Approved</span></td></tr>
+          <tr><td class="font-medium">ITC Hotel — Catering Services</td><td>Hospitality</td><td class="font-semibold">₹2,200</td><td><div class="flex gap-2 items-center"><div class="avatar avatar-sm av-amber">RS</div> Rahul</div></td><td>Dec 7</td><td><i class="ti ti-receipt-2" style="color:var(--a400)"></i></td><td><span class="badge badge-amber">Pending</span></td></tr>
+          <tr><td class="font-medium">AV Equipment — Cable Set</td><td>Stage Mgmt</td><td class="font-semibold">₹330</td><td><div class="flex gap-2 items-center"><div class="avatar avatar-sm av-amber">RS</div> Rahul</div></td><td>Dec 8</td><td><i class="ti ti-receipt-2" style="color:var(--t400)"></i></td><td><span class="badge badge-green">Approved</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div><!-- end main -->
+</div><!-- end app -->
+
+<!-- ══════════════════════════════════
+     MODALS
+══════════════════════════════════ -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeModal(event)">
+<div class="modal" onclick="event.stopPropagation()">
+  <div class="modal-header">
+    <div class="modal-title" id="modalTitle">Modal</div>
+    <button class="btn btn-ghost btn-icon" onclick="closeModal()"><i class="ti ti-x"></i></button>
+  </div>
+  <div class="modal-body" id="modalBody"></div>
+  <div class="modal-footer" id="modalFooter"></div>
+</div>
+</div>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>
